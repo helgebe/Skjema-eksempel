@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+    <title>Meld interesse</title>
+  </head>
+<body>
+  <h2>Skjema</h2>
+<button class="freelance_button">Jeg er privat/freelancer</button>
+<button class="company_button">Jeg representerer et firma</button>
+  <br>
+<form action="" method="post" enctype="multipart/form-data">
+  <fieldset class="set">
+    <h3 id="formtitle">Skjema for firma:</h3>
+    <br>
+    <div class="row">
+      <div class="col">
+        <label for="company_name">Firmanavn:</label>
+        <input type="text" name="company_name">
+      </div>
+      <div class="col">
+        <label for="company_orgnr">Orgnr:</label>
+        <input type="text" name="company_orgnr">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="contact_fornavn">Ditt fornavn:</label>
+        <input type="text" name="contact_fornavn">
+      </div>
+      <div class="col">
+        <label for="contact_etternavn">Ditt etternavn:</label>
+        <input type="text" name="contact_etternavn">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="contact_telefon">Ditt telefonnummer:</label>
+        <input type="text" name="contact_telefon">
+      </div>
+      <div class="col">
+        <label for="contact_epost">Din epost:</label>
+        <input type="email" name="contact_epost" required>
+      </div>
+    <div class="clearfix"></div>
+    <div id="candidates">
+      <span id="candidates_header">Kandidater:<br></span>
+      <div id="firstcandidate"></div>
+      <div id="candidate">
+        <span id="candidates_list"></span>
+      </div>
+    </div>
+  </fieldset>
+      <div id="additional_candidates" style="display"><span class="plus">+</span>legg til flere kandidater</div>
+    <input type="hidden" name="isFreelance" value="false"/>
+</div>
+
+<br>
+<input type="checkbox" name="jobalert">Jeg ønsker å bli varslet om nye oppdrag</input>
+<br>
+<input type="checkbox" name="testmode" checked>testmode</input> Oppdater firmaid 13, contactid 50 og candidateid 33 i stedet for å opprette nye når denne er checked
+<br>
+<input type="submit">Sjekk om bruker finnes og opprett eller oppdater på carerix</input>
+<br>
+</form>
+
+</body>
+<script>
+
+$(document).ready(function(){
+  var x = 0;
+  var names = '<div class="candidate_names row"><div class="col"><label for="CandidateFirstName['+x+']">Fornavn:</label><input type="text" name="CandidateFirstName['+x+']"></div>'+
+      '<div class="col"><label for="CandidateLastName['+x+']">Etternavn:</label> <input type="text" name="CandidateLastName['+x+']" required></div></div>';
+  var salary_and_fromdate = '<div class="row"><div class="col"><label for="CandidateSalary['+x+']">Pris:</label> <input type="text" name="CandidateSalary['+x+']"> NOK </div>'+
+  '<div class="col"><label for="CandidateFromDate['+x+']">Ledig fra:</label><input type="date" class="fromDate" name="CandidateFromDate['+x+']"></div></div>'+
+  '<div class="clearfix"></div>';
+
+  var workhours = '<label for="CandidateWorkhours['+x+']">Stillingsbrøk:</label> <select name="CandidateWorkhours['+x+']"><br>'+
+      '<option value="20">20%</option><option value="25">25%</option>'+
+      '<option value="30">30%</option><option value="40">40%</option>'+
+      '<option value="50">50%</option><option value="60">60%</option>'+
+      '<option value="70">70%</option><option value="75">75%</option>'+
+      '<option value="80">80%</option><option value="100" selected>100%</option></select><br>';
+  var notes = '<label for="notes['+x+']">Kommentarer, annen informasjon:</label> <br><textarea name="notes['+x+']"></textarea><br>';
+  var file = '<label for="attachment['+x+']">Last opp CV: </label><input id="candidate_cv" type="file" name="attachment['+x+']"><br>';
+  var candidate = '<div>' + names + salary_and_fromdate + workhours + notes + file + '</div>';
+
+  $('#additional_candidates').click(function(e){
+    x = 1;
+    e.preventDefault();
+    $('#candidates_list').append(candidate);
+    x++;
+  });
+    $('#firstcandidate').append(candidate);
+});
+
+$('.freelance_button').click(function(e) {
+  e.preventDefault();
+  $("input[name='isFreelance']").val("true");
+  $('#formtitle').text("Skjema for freelancer");
+  $('#additional_candidates').hide();
+  $('#candidates_header').hide();
+  $('.candidate_names').hide();
+  $('#candidate').hide();
+});
+
+$('.company_button').click(function(e) {
+  e.preventDefault();
+  $("input[name='isFreelance']").val("false");
+  $('#formtitle').text("Skjema for firma");
+  $('#candidate').show();
+  $('.candidate_names').show();
+  $('#candidates_header').show();
+  $('#additional_candidates').show();
+});
+
+$(document).ready(function(){
+  var now = new Date();
+  $('.fromDate').val(now.getFullYear() + "-" + (now.getMonth()+1) + "-" + now.getDate());
+});
+
+</script>
+</html>
